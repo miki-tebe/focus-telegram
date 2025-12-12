@@ -1,0 +1,17 @@
+[telegram]
+api_id = 0000000
+api_hash = 00000000000000000000000000000000
+session_name = focus_session
+
+[settings]
+# Set to "true" to prevent your pinned chats from being archived.
+# Set to "false" to archive them along with everything else.
+ignore_pinned_chats = true
+
+[exclusions]
+# 🛡️ EXCLUSION LIST
+# Add any chats here that you NEVER want to be archived by this script.
+# This is now the most important list. Everything NOT on this list will be archived.
+# @ in username is not required.
+# Example: exclude = MyBoss, MyTeamGroup, +15551234567
+exclude = found_this
