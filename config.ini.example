@@ -9,7 +9,7 @@ session_name = focus_session
 ignore_pinned_chats = true
 
 [exclusions]
-# 🛡️ EXCLUSION LIST
+# EXCLUSION LIST
 # Add any chats here that you NEVER want to be archived by this script.
 # This is now the most important list. Everything NOT on this list will be archived.
 # @ in username is not required.
