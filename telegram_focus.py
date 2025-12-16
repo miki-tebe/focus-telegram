@@ -57,7 +57,13 @@ def load_config() -> tuple[TelegramClient, List[str], bool]:
 
         # Exclusion list
         exclude_str = config.get("exclusions", "exclude", fallback="")
-        exclude_list = [x.strip() for x in exclude_str.split(",") if x.strip()]
+        raw_excludes = [x.strip() for x in exclude_str.split(",") if x.strip()]
+        exclude_list = []
+        for item in raw_excludes:
+            try:
+                exclude_list.append(int(item))
+            except ValueError:
+                exclude_list.append(item)
 
         # Pinned setting
         ignore_pinned = config.getboolean(
@@ -83,12 +89,17 @@ def should_exclude(dialog):
 
     ent = getattr(dialog, "entity", None)
     dialog_id = getattr(dialog, "id", None)
+    raw_id = getattr(ent, "id", None)
     username = getattr(ent, "username", None) if ent else None
     title = getattr(dialog, "title", getattr(dialog, "name", None))
 
     for ex in EXCLUDE_LIST:
-        if isinstance(ex, int) and dialog_id == ex:
-            return True
+        if isinstance(ex, int):
+            if dialog_id == ex:
+                return True
+            # Also check raw ID (e.g. if user put positive part of channel ID)
+            if raw_id and raw_id == ex:
+                return True
         if isinstance(ex, str):
             if username and username.lower() == ex.lower():
                 return True
@@ -325,8 +336,9 @@ async def move_dialogs(archive=True):
     ids_to_track = []
 
     async for dialog in client.iter_dialogs(archived=target_archived):
-        if should_exclude(dialog):
-            logger.debug(f"Skipping (excluded): {dialog.title}")
+        should = should_exclude(dialog)
+        if should:
+            logger.info(f"Skipping (excluded): {dialog.title} (ID: {dialog.id})")
             continue
 
         # If unarchiving, skip if not in our tracked list

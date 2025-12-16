@@ -12,6 +12,6 @@ ignore_pinned_chats = true
 # EXCLUSION LIST
 # Add any chats here that you NEVER want to be archived by this script.
 # This is now the most important list. Everything NOT on this list will be archived.
-# @ in username is not required.
-# Example: exclude = MyBoss, MyTeamGroup, +15551234567
+# @ in username is not required. Works with channel ID for private groups or channels.
+# Example: exclude = MyBoss, MyTeamGroup, +15551234567, -1000000000000 
 exclude = found_this
