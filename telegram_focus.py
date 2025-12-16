@@ -17,6 +17,7 @@ from telethon.errors import FloodWaitError
 from telethon.tl.functions.messages import (
     GetDialogFiltersRequest,
     UpdateDialogFilterRequest,
+    UpdateDialogFiltersOrderRequest,
 )
 from telethon.tl.types import (
     DialogFilter,
@@ -282,6 +283,17 @@ async def restore_folders():
 
             await client(UpdateDialogFilterRequest(id=new_filter.id, filter=new_filter))
         logger.info(f"Restored {len(data)} folders.")
+
+        # Restore order
+        # The list 'data' is loaded from JSON which preserves order of insertion/list.
+        # We assume the user wants them in that saved order.
+        ordered_ids = [d["id"] for d in data]
+        if ordered_ids:
+            try:
+                await client(UpdateDialogFiltersOrderRequest(order=ordered_ids))
+                logger.info("Restored folder order.")
+            except Exception as e:
+                logger.error(f"Error restoring folder order: {e}")
 
         if os.path.exists(FOLDERS_FILE):
             os.remove(FOLDERS_FILE)
