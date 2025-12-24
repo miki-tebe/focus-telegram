@@ -1,3 +1,12 @@
+# ⚠️ DISCLAIMER ⚠️
+
+Telegram has been very aggressive lately especially with new accounts so use at
+your own risk. I have not tested this with new accounts. Telegram may block your
+account if you use this script. Test it on an account that you don't mind
+losing.
+
+This script is provided as-is without any warranty. Use at your own risk.
+
 # Telegram Focus Mode
 
 Telegram Focus Mode is a Python utility designed to help you regain your focus
